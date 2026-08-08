@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Garten- &amp; Teichbau — 3D-Layout</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #F4F1E9;
+    --ink: #1E2A1A;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Work Sans', sans-serif;
+    color: var(--cream);
+    background: #BFDDE0; /* Fallback, bevor Three.js lädt */
+  }
+  h1, h2 { font-family: 'Fraunces', serif; font-weight: 600; line-height: 1.05; }
+
+  #canvas-container {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+  }
+  #canvas-container canvas { display: block; }
+
+  /* Scrollbarer Spacer über der fixierten Canvas */
+  main {
+    position: relative;
+    z-index: 2;
+  }
+
+  section {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    padding: 0 8vw;
+  }
+
+  .panel {
+    max-width: 560px;
+    padding: 2.2rem 2.4rem;
+    border-radius: 6px;
+    background: rgba(20, 20, 15, 0.28);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+  }
+  .panel.visible { opacity: 1; transform: translateY(0); }
+
+  #sky .panel { background: rgba(20, 30, 20, 0.18); color: var(--ink); }
+
+  .eyebrow {
+    font-size: 0.82rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    opacity: 0.8;
+    margin-bottom: 0.9rem;
+    display: block;
+  }
+  #sky h1 { font-size: clamp(2.2rem, 5vw, 3.8rem); margin-bottom: 1rem; text-shadow: 0 2px 20px rgba(255,255,255,0.4); }
+  h2 { font-size: clamp(1.6rem, 3.2vw, 2.4rem); margin-bottom: 1rem; text-shadow: 0 2px 20px rgba(0,0,0,0.3); }
+  p.lead { font-size: 1.08rem; line-height: 1.6; max-width: 44ch; }
+
+  .cta {
+    display: inline-block;
+    margin-top: 1.8rem;
+    padding: 0.85rem 1.7rem;
+    background: var(--cream);
+    color: var(--ink);
+    border-radius: 4px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: transform 0.25s ease;
+  }
+  .cta:hover { transform: translateY(-2px); }
+
+  footer {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    padding: 2rem;
+    font-size: 0.85rem;
+    opacity: 0.75;
+    background: rgba(10,20,20,0.5);
+  }
+
+  #progress-hint {
+    position: fixed;
+    bottom: 1.2rem;
+    right: 1.2rem;
+    z-index: 3;
+    font-size: 0.75rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--cream);
+    opacity: 0.55;
+    writing-mode: vertical-rl;
+  }
+
+  @media (max-width: 640px) {
+    section { padding: 0 6vw; }
+    .panel { padding: 1.6rem 1.7rem; }
+  }
+</style>
+</head>
+<body>
+
+<div id="canvas-container"></div>
+
+<main>
+  <section id="sky">
+    <div class="panel">
+      <span class="eyebrow">Garten- &amp; Teichbau</span>
+      <h1>Ihr Garten,<br>neu gedacht.</h1>
+      <p class="lead">Von der ersten Skizze bis zum fertigen Teich — wir gestalten Außenräume, die wachsen, atmen und bleiben.</p>
+    </div>
+  </section>
+
+  <section id="grass">
+    <div class="panel">
+      <span class="eyebrow">Leistungen</span>
+      <h2>Gartengestaltung mit Handschrift</h2>
+      <p class="lead">Terrassenbau, Bepflanzung, Wegeführung — jedes Projekt beginnt mit einem Gespräch vor Ort und endet mit einem Garten, der zu Ihrem Grundstück passt.</p>
+    </div>
+  </section>
+
+  <section id="earth">
+    <div class="panel">
+      <span class="eyebrow">Der Aufbau</span>
+      <h2>Was unter der Oberfläche zählt</h2>
+      <p class="lead">Bodenaushub, Drainage, Fundament für Teich und Wege — solide Arbeit, die man später nicht mehr sieht, aber immer spürt.</p>
+    </div>
+  </section>
+
+  <section id="water">
+    <div class="panel">
+      <span class="eyebrow">Teichbau</span>
+      <h2>Wasser, das Ruhe bringt</h2>
+      <p class="lead">Vom naturnahen Schwimmteich bis zum gestalteten Zierteich mit Bachlauf — wir planen die Technik, damit Sie nur noch genießen müssen.</p>
+      <a href="#" class="cta">Jetzt Beratung anfragen</a>
+    </div>
+  </section>
+</main>
+
+<footer>Garten- &amp; Teichbau — 3D-Layout-Platzhalter · echte Inhalte &amp; Blender-Assets folgen</footer>
+<div id="progress-hint">Scrollen ↓</div>
+
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://unpkg.com/three@0.170.0/build/three.module.js"
+  }
+}
+</script>
+<script type="module">
+import * as THREE from 'three';
+
+const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+/* ---------------- Basis-Setup ---------------- */
+const container = document.getElementById('canvas-container');
+const scene = new THREE.Scene();
+scene.fog = new THREE.Fog(0xBFDDE0, 20, 90);
+
+const camera = new THREE.PerspectiveCamera(55, window.innerWidth / window.innerHeight, 0.1, 200);
+
+const renderer = new THREE.WebGLRenderer({ antialias: true });
+renderer.setSize(window.innerWidth, window.innerHeight);
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+container.appendChild(renderer.domElement);
+
+window.addEventListener('resize', () => {
+  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(window.innerWidth, window.innerHeight);
+});
+
+/* ---------------- Licht ---------------- */
+const ambient = new THREE.AmbientLight(0xffffff, 0.55);
+scene.add(ambient);
+
+const sunLight = new THREE.DirectionalLight(0xfff3d0, 1.2);
+sunLight.position.set(15, 30, 10);
+sunLight.castShadow = true;
+sunLight.shadow.mapSize.set(1024, 1024);
+sunLight.shadow.camera.left = -30;
+sunLight.shadow.camera.right = 30;
+sunLight.shadow.camera.top = 30;
+sunLight.shadow.camera.bottom = -30;
+scene.add(sunLight);
+
+/* ---------------- Terrain-Blöcke ---------------- */
+const grassMat = new THREE.MeshStandardMaterial({ color: 0x5C7A45, roughness: 0.9 });
+const grassBlock = new THREE.Mesh(new THREE.BoxGeometry(60, 6, 34), grassMat);
+grassBlock.position.set(0, -3, 0);
+grassBlock.receiveShadow = true;
+scene.add(grassBlock);
+
+const earthMat = new THREE.MeshStandardMaterial({ color: 0x5A4230, roughness: 1 });
+const earthBlock = new THREE.Mesh(new THREE.BoxGeometry(60, 16, 34), earthMat);
+earthBlock.position.set(0, -14, 0);
+earthBlock.receiveShadow = true;
+scene.add(earthBlock);
+
+// Teichbecken: dunkler "ausgehobener" Block innerhalb des Erdblocks
+const basinMat = new THREE.MeshStandardMaterial({ color: 0x122e2c, roughness: 1 });
+const basin = new THREE.Mesh(new THREE.BoxGeometry(20, 9, 18), basinMat);
+basin.position.set(0, -17.4, -4);
+scene.add(basin);
+
+// Wasseroberfläche mit animierten Wellen
+const waterGeo = new THREE.PlaneGeometry(19, 17, 48, 48);
+const waterMat = new THREE.MeshStandardMaterial({
+  color: 0x2C5F5D,
+  roughness: 0.15,
+  metalness: 0.1,
+  transparent: true,
+  opacity: 0.92,
+});
+const water = new THREE.Mesh(waterGeo, waterMat);
+water.rotation.x = -Math.PI / 2;
+water.position.set(0, -13, -4);
+scene.add(water);
+const waterBasePositions = waterGeo.attributes.position.array.slice();
+
+/* ---------------- Steine ---------------- */
+const rockMat = new THREE.MeshStandardMaterial({ color: 0x8a8378, roughness: 1, flatShading: true });
+for (let i = 0; i < 10; i++) {
+  const size = 0.4 + Math.random() * 0.9;
+  const rock = new THREE.Mesh(new THREE.IcosahedronGeometry(size, 0), rockMat);
+  rock.position.set(
+    (Math.random() - 0.5) * 40,
+    -8 - Math.random() * 10,
+    (Math.random() - 0.5) * 26
+  );
+  rock.rotation.set(Math.random() * Math.PI, Math.random() * Math.PI, Math.random() * Math.PI);
+  rock.castShadow = true;
+  scene.add(rock);
+}
+
+/* ---------------- Wurzeln ---------------- */
+const rootMat = new THREE.MeshStandardMaterial({ color: 0x3a2a1c, roughness: 1 });
+function makeRoot(x, z, depth, tilt) {
+  const root = new THREE.Mesh(new THREE.CylinderGeometry(0.15, 0.4, depth, 6), rootMat);
+  root.position.set(x, -6 - depth / 2, z);
+  root.rotation.z = tilt;
+  scene.add(root);
+}
+makeRoot(-4, 2, 7, 0.15);
+makeRoot(3, -1, 5, -0.1);
+makeRoot(-1.5, 4, 6, 0.05);
+
+/* ---------------- Gras-Halme (Instanced) ---------------- */
+const bladeGeo = new THREE.PlaneGeometry(0.12, 0.9);
+bladeGeo.translate(0, 0.45, 0);
+const bladeMat = new THREE.MeshStandardMaterial({ color: 0x7fa25c, side: THREE.DoubleSide, roughness: 0.8 });
+const bladeCount = 260;
+const blades = new THREE.InstancedMesh(bladeGeo, bladeMat, bladeCount);
+const dummy = new THREE.Object3D();
+for (let i = 0; i < bladeCount; i++) {
+  dummy.position.set((Math.random() - 0.5) * 38, 0, (Math.random() - 0.5) * 22);
+  dummy.rotation.y = Math.random() * Math.PI;
+  dummy.rotation.z = (Math.random() - 0.5) * 0.3;
+  const s = 0.6 + Math.random() * 0.8;
+  dummy.scale.set(s, s, s);
+  dummy.updateMatrix();
+  blades.setMatrixAt(i, dummy.matrix);
+}
+blades.castShadow = true;
+scene.add(blades);
+
+/* ---------------- Sonne & Wolken ---------------- */
+const sun = new THREE.Mesh(
+  new THREE.SphereGeometry(2.2, 24, 24),
+  new THREE.MeshBasicMaterial({ color: 0xfff2c2 })
+);
+sun.position.set(16, 26, -20);
+scene.add(sun);
+
+function makeCloud(x, y, z, scale) {
+  const group = new THREE.Group();
+  const cloudMat = new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 1, flatShading: true });
+  const puffCount = 4 + Math.floor(Math.random() * 3);
+  for (let i = 0; i < puffCount; i++) {
+    const puff = new THREE.Mesh(new THREE.IcosahedronGeometry(1 + Math.random() * 0.6, 0), cloudMat);
+    puff.position.set(i * 1.3 - puffCount * 0.6, Math.random() * 0.4, Math.random() * 0.4);
+    group.add(puff);
+  }
+  group.position.set(x, y, z);
+  group.scale.setScalar(scale);
+  scene.add(group);
+}
+makeCloud(-14, 20, -25, 1.4);
+makeCloud(8, 24, -30, 1.8);
+makeCloud(-4, 17, -18, 1);
+
+/* ---------------- Kamerafahrt entlang Scroll ---------------- */
+const waypoints = [
+  { pos: [0, 16, 42], look: [0, 6, 0],   bg: 0xEAF3F0, fog: 0xBFDDE0 }, // Himmel
+  { pos: [0, 1.5, 13], look: [0, -1, -2], bg: 0x6f9350, fog: 0x4f6b3a }, // Wiese
+  { pos: [0, -10, 9], look: [0, -13, -3], bg: 0x5A4230, fog: 0x3a2a1c }, // Erdboden
+  { pos: [0, -16.5, 6], look: [0, -17.5, -4], bg: 0x1e4d4b, fog: 0x122e2c }, // Wasser
+];
+
+const tmpColorA = new THREE.Color();
+const tmpColorB = new THREE.Color();
+
+function smoothstep(t) { return t * t * (3 - 2 * t); }
+
+function updateCameraForProgress(p) {
+  const segCount = waypoints.length - 1;
+  const scaled = Math.min(p, 0.9999) * segCount;
+  const idx = Math.floor(scaled);
+  const localT = smoothstep(scaled - idx);
+  const a = waypoints[idx];
+  const b = waypoints[Math.min(idx + 1, segCount)];
+
+  camera.position.set(
+    THREE.MathUtils.lerp(a.pos[0], b.pos[0], localT),
+    THREE.MathUtils.lerp(a.pos[1], b.pos[1], localT),
+    THREE.MathUtils.lerp(a.pos[2], b.pos[2], localT)
+  );
+  const lookX = THREE.MathUtils.lerp(a.look[0], b.look[0], localT);
+  const lookY = THREE.MathUtils.lerp(a.look[1], b.look[1], localT);
+  const lookZ = THREE.MathUtils.lerp(a.look[2], b.look[2], localT);
+  camera.lookAt(lookX, lookY, lookZ);
+
+  tmpColorA.set(a.bg); tmpColorB.set(b.bg);
+  const bgColor = tmpColorA.clone().lerp(tmpColorB, localT);
+  scene.background = bgColor;
+
+  tmpColorA.set(a.fog); tmpColorB.set(b.fog);
+  scene.fog.color = tmpColorA.clone().lerp(tmpColorB, localT);
+}
+
+function getScrollProgress() {
+  const max = document.documentElement.scrollHeight - window.innerHeight;
+  return max > 0 ? window.scrollY / max : 0;
+}
+
+/* ---------------- Panels ein-/ausblenden ---------------- */
+const panels = document.querySelectorAll('.panel');
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    entry.target.classList.toggle('visible', entry.isIntersecting);
+  });
+}, { threshold: 0.35 });
+panels.forEach(p => observer.observe(p));
+
+/* ---------------- Render-Loop ---------------- */
+let clock = new THREE.Clock();
+function animate() {
+  requestAnimationFrame(animate);
+  const t = clock.getElapsedTime();
+
+  if (!reduceMotion) {
+    // Wasser-Wellen animieren
+    const pos = waterGeo.attributes.position;
+    for (let i = 0; i < pos.count; i++) {
+      const ix = i * 3;
+      const x = waterBasePositions[ix];
+      const y = waterBasePositions[ix + 1];
+      pos.array[ix + 2] = Math.sin(x * 0.6 + t * 1.4) * 0.08 + Math.cos(y * 0.5 + t * 1.1) * 0.08;
+    }
+    pos.needsUpdate = true;
+  }
+
+  updateCameraForProgress(getScrollProgress());
+  renderer.render(scene, camera);
+}
+updateCameraForProgress(0);
+animate();
+
+window.addEventListener('scroll', () => {
+  // Fortschritt wird im Render-Loop kontinuierlich aktualisiert,
+  // hier reicht ein leeres Listener-Delta, um passives Scrollen sauber zu halten.
+}, { passive: true });
+</script>
+
+</body>
+</html>
